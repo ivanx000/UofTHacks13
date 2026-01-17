@@ -4,38 +4,39 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Text } from "@react-three/drei";
 import { RecommendationResponse, searchProducts, SearchProduct, getRecommendations } from "@/lib/api";
+import Product3DModel from "@/components/3d/Product3DModel";
 
-// Product Box Component
-function ProductBox({ 
+// Product 3D Component
+function Product3D({ 
   position, 
   productName, 
   isSelected, 
-  onClick 
+  onClick,
+  color,
+  modelFile,
+  scale,
+  offset
 }: { 
   position: [number, number, number];
   productName: string;
   isSelected: boolean;
   onClick: () => void;
+  color: string;
+  modelFile: string;
+  scale?: number;
+  offset?: [number, number, number];
 }) {
-  const [hovered, setHovered] = useState(false);
-  
   return (
-    <group position={position}>
-      <mesh
-        onClick={onClick}
-        onPointerOver={() => setHovered(true)}
-        onPointerOut={() => setHovered(false)}
-        scale={isSelected ? [3, 3, 3] : hovered ? [1.2, 1.2, 1.2] : [1, 1, 1]}
-      >
-        <boxGeometry args={[1, 1, 1]} />
-        <meshStandardMaterial 
-          color={isSelected ? "#3b82f6" : hovered ? "#60a5fa" : "#8b5cf6"} 
-          metalness={0.5}
-          roughness={0.5}
-        />
-      </mesh>
+    <group position={position} onClick={onClick}>
+      <Product3DModel 
+        position={[0, 0, 0]} 
+        color={color}
+        modelFile={modelFile}
+        scale={scale}
+        offset={offset}
+      />
       <Text
-        position={[0, 0.8, 0]}
+        position={[0, -1.5, 0]}
         fontSize={0.2}
         color="black"
         anchorX="center"
@@ -61,35 +62,54 @@ function Scene({
   onProductClick: (index: number) => void;
 }) {
   const positions: [number, number, number][] = [
-    [-3, 0, 0],
-    [-1, 0, 0],
-    [1, 0, 0],
-    [3, 0, 0],
-    [0, -2, 0],
+    [-4, 0, 0],
+    [-2, 0, 0],
+    [0, 0, 0],
+    [2, 0, 0],
+    [4, 0, 0],
   ];
 
+  const colors = ["#ff6b6b", "#4ecdc4", "#45b7d1", "#f9ca24", "#6c5ce7"];
+  
+  // Map product names to their model files
+  const modelFiles = ["candle.obj", "diffuser.obj", "journal.obj", "pillow.obj", "tea.obj"];
+  
+  // Adjust scales for each model
+  const scales = [0.007, 0.005, 0.0060, 0.002, 0.005]; // candle, diffuser, journal, pillow, tea  
+  // Adjust offsets to center rotation for each model [x, y, z]
+  const offsets: [number, number, number][] = [
+    [0, 0, 0],     // candle
+    [0, 0, 0],     // diffuser
+    [0, 0, 0],     // journal
+    [0, 0, 0],     // pillow
+    [0, 0, 0],     // tea
+  ];
   return (
-    <Canvas camera={{ position: selectedIndex !== null ? [-1, 0, 5] : [0, 0, 8], fov: selectedIndex !== null ? 60 : 50 }}>
-      <ambientLight intensity={0.5} />
-      <directionalLight position={[10, 10, 5]} intensity={1} />
-      <pointLight position={[-10, -10, -5]} intensity={0.5} />
+    <Canvas camera={{ position: selectedIndex !== null ? [-2, 0, 5] : [0, 0, 10], fov: selectedIndex !== null ? 60 : 50 }}>
+      <ambientLight intensity={0.8} />
+      <directionalLight position={[10, 10, 5]} intensity={1.5} />
+      <pointLight position={[-10, -10, -5]} intensity={0.8} />
       
       {products.slice(0, 5).map((product, index) => {
-        // Always render all boxes, but position selected one on the left
+        // Always render all products, but position selected one on the left
         const isSelected = selectedIndex === index;
         const position: [number, number, number] = isSelected 
-          ? [-1, 0, 0]  // Move to left side when selected, more centered
+          ? [-2, 0, 0]  // Move to left side when selected
           : selectedIndex !== null 
-            ? [10, 10, 10] // Hide other boxes far away when one is selected
+            ? [10, 10, 10] // Hide other products far away when one is selected
             : positions[index]; // Original position when nothing selected
         
         return (
-          <ProductBox
+          <Product3D
             key={index}
             position={position}
             productName={product.name}
             isSelected={isSelected}
             onClick={() => onProductClick(index)}
+            color={colors[index % colors.length]}
+            modelFile={modelFiles[index]}
+            scale={scales[index]}
+            offset={offsets[index]}
           />
         );
       })}
