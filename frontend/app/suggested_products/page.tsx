@@ -71,6 +71,34 @@ export default function SuggestionsPage({ params }: Props) {
     return () => clearTimeout(timer);
   }, [router]);
 
+  const handleViewProducts = async (index: number, productName: string) => {
+    // If already expanded, collapse it
+    if (expandedProduct === index) {
+      setExpandedProduct(null);
+      return;
+    }
+
+    // If we already have results for this product, just expand
+    if (searchResults[index]) {
+      setExpandedProduct(index);
+      return;
+    }
+
+    // Otherwise, fetch products
+    setLoadingProducts((prev) => ({ ...prev, [index]: true }));
+    setExpandedProduct(index);
+
+    try {
+      const results = await searchProducts(productName, 10);
+      setSearchResults((prev) => ({ ...prev, [index]: results.products }));
+    } catch (error) {
+      console.error("Error searching products:", error);
+      setSearchResults((prev) => ({ ...prev, [index]: [] }));
+    } finally {
+      setLoadingProducts((prev) => ({ ...prev, [index]: false }));
+    }
+  };
+
   if (!data) {
     return (
       <div className="min-h-screen flex items-center justify-center text-4xl">
