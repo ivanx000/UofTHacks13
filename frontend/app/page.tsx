@@ -28,9 +28,9 @@ export default function Home() {
     return () => clearInterval(interval); // cleanup on unmount
   }, []);
 
-  const goToLoadingPage = () => {
+  const goTo3DDemo = () => {
     if (goal.trim() === "") return; // extra safety
-    router.push(`/loading_page?goal=${encodeURIComponent(goal)}`);
+    router.push(`/3d-demo?goal=${encodeURIComponent(goal)}`);
   };
 
   return (
@@ -75,7 +75,7 @@ export default function Home() {
 
           {/* Go Button */}
           <button
-            onClick={goToLoadingPage}
+            onClick={goTo3DDemo}
             disabled={goal.trim() === ""}
             className="ml-2 lg:ml-5 w-15 lg:w-20 bg-blue-500 text-white font-bold py-2 px-4 rounded-lg disabled:opacity-50"
           >
