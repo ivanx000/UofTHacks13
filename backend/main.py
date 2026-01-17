@@ -19,8 +19,8 @@ if not api_key:
 genai.configure(api_key=api_key)
 # Try different models to avoid rate limits
 # gemini-pro is the standard model with separate quota limits
-model = genai.GenerativeModel('gemini-2.5-flash')
-print("Using model: gemini-pro")
+model = genai.GenerativeModel('gemini-2.5-flash-lite')
+print("Using model: gemini-2.5-flash-lite")
 
 app = FastAPI(title="Vibe-to-Product API")
 

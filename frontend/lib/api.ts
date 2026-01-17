@@ -2,6 +2,55 @@
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
+// Session cache utilities
+const CACHE_PREFIX = 'api_cache_';
+const CACHE_EXPIRY = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+
+interface CacheEntry<T> {
+  data: T;
+  timestamp: number;
+}
+
+function getCacheKey(endpoint: string, params: any): string {
+  return `${CACHE_PREFIX}${endpoint}_${JSON.stringify(params)}`;
+}
+
+function getFromCache<T>(key: string): T | null {
+  if (typeof window === 'undefined') return null;
+  
+  try {
+    const cached = sessionStorage.getItem(key);
+    if (!cached) return null;
+    
+    const entry: CacheEntry<T> = JSON.parse(cached);
+    
+    // Check if cache is still valid (within 24 hours)
+    if (Date.now() - entry.timestamp > CACHE_EXPIRY) {
+      sessionStorage.removeItem(key);
+      return null;
+    }
+    
+    return entry.data;
+  } catch (error) {
+    console.error('Error reading from cache:', error);
+    return null;
+  }
+}
+
+function saveToCache<T>(key: string, data: T): void {
+  if (typeof window === 'undefined') return;
+  
+  try {
+    const entry: CacheEntry<T> = {
+      data,
+      timestamp: Date.now()
+    };
+    sessionStorage.setItem(key, JSON.stringify(entry));
+  } catch (error) {
+    console.error('Error saving to cache:', error);
+  }
+}
+
 export interface Product {
   name: string;
   reason: string;
@@ -14,6 +63,15 @@ export interface RecommendationResponse {
 }
 
 export async function getRecommendations(vibe: string): Promise<RecommendationResponse> {
+  const cacheKey = getCacheKey('recommend', { vibe });
+  
+  // Check cache first
+  const cached = getFromCache<RecommendationResponse>(cacheKey);
+  if (cached) {
+    console.log('Returning cached recommendations for vibe:', vibe);
+    return cached;
+  }
+  
   console.log(`Making API call to ${API_BASE_URL}/recommend with vibe:`, vibe);
   
   const response = await fetch(`${API_BASE_URL}/recommend`, {
@@ -34,6 +92,10 @@ export async function getRecommendations(vibe: string): Promise<RecommendationRe
 
   const data = await response.json();
   console.log("API response data:", data);
+  
+  // Save to cache
+  saveToCache(cacheKey, data);
+  
   return data;
 }
 
@@ -58,6 +120,15 @@ export interface ProductSearchResponse {
 }
 
 export async function searchProducts(productName: string, maxResults: number = 10): Promise<ProductSearchResponse> {
+  const cacheKey = getCacheKey('search-products', { product_name: productName, max_results: maxResults });
+  
+  // Check cache first
+  const cached = getFromCache<ProductSearchResponse>(cacheKey);
+  if (cached) {
+    console.log('Returning cached product search for:', productName);
+    return cached;
+  }
+  
   console.log(`Searching for products: ${productName}`);
   
   const response = await fetch(`${API_BASE_URL}/search-products`, {
@@ -78,5 +149,9 @@ export async function searchProducts(productName: string, maxResults: number = 1
 
   const data = await response.json();
   console.log("Product search data:", data);
+  
+  // Save to cache
+  saveToCache(cacheKey, data);
+  
   return data;
 }
