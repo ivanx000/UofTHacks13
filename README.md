@@ -222,6 +222,12 @@ npm install
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
+### Future Plans
+- 3D Model Library/Generation: Scale the collection to have a 3D model show up for any recommended product!
+- Merchant-facing dashboard: For analytics, including what inputs prompt their products, revenue from ShopOut, adjacent products, and more
+- User input filters
+
+
 ## 🏆 Built For
 
 **UofTHacks 13** - University of Toronto Hackathon
