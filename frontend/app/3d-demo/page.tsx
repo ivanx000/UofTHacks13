@@ -5,6 +5,13 @@ import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Text } from "@react-three/drei";
 import { RecommendationResponse, searchProducts, SearchProduct, getRecommendations } from "@/lib/api";
 import Product3DModel from "@/components/3d/Product3DModel";
+import { Rock_Salt } from "next/font/google";
+
+const rockSalt = Rock_Salt({
+  subsets: ["latin"],
+  weight: "400",
+  display: "swap",
+});
 
 // Product 3D Component
 function Product3D({ 
@@ -43,24 +50,24 @@ function Product3D({
           <Text
             position={[0, -1.5, 0]}
             fontSize={0.35}
-            color="black"
+            color="white"
             anchorX="center"
             anchorY="middle"
             maxWidth={4}
             outlineWidth={0.06}
-            outlineColor="white"
+            outlineColor="black"
           >
             {productName}
           </Text>
           <Text
-            position={[2.5, 0, 0]}
-            fontSize={0.22}
-            color="black"
-            anchorX="left"
+            position={[0, -2.3, 0]}
+            fontSize={0.35}
+            color="white"
+            anchorX="center"
             anchorY="middle"
-            maxWidth={3}
-            outlineWidth={0.02}
-            outlineColor="white"
+            maxWidth={5}
+            outlineWidth={0.03}
+            outlineColor="black"
           >
             {productReason}
           </Text>
@@ -98,7 +105,7 @@ function Scene({
     [-6, -3.5, 0],
   ];
 
-  const colors = ["#ff6b6b", "#4ecdc4", "#45b7d1", "#f9ca24", "#6c5ce7"];
+  const colors = ["#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff"];
   
   // Map product names to their model files
   const modelFiles = ["candle.obj", "diffuser.obj", "journal.obj", "pillow.obj", "tea.obj"];
@@ -222,7 +229,7 @@ function ThreeDDemoContent() {
         <div className="absolute top-4 right-4 z-10">
           <button
             onClick={() => router.push("/")}
-            className="px-4 py-2 bg-gray-800 hover:bg-gray-900 rounded-lg text-white"
+            className="px-4 py-2 bg-white hover:bg-gray-100 rounded-lg text-gray-700"
           >
             ← Back to Home
           </button>
@@ -240,24 +247,24 @@ function ThreeDDemoContent() {
                 <div className="h-full flex items-center justify-center p-4 relative bg-transparent">
                   <button
                     onClick={() => setSelectedProductDetail(null)}
-                    className="absolute top-4 right-4 text-white bg-gray-800 hover:bg-gray-900 text-xl font-bold w-10 h-10 flex items-center justify-center rounded-full shadow-lg transition-all hover:scale-110 z-10"
+                    className="absolute top-4 right-4 text-gray-700 bg-white hover:bg-gray-100 text-xl font-bold w-10 h-10 flex items-center justify-center rounded-full shadow-lg transition-all hover:scale-110 z-10"
                   >
                     ✕
                   </button>
                   
-                  <div className="flex flex-col items-center w-full h-full justify-center px-6">
+                  <div className="flex flex-col items-center w-full h-full justify-center px-12 py-8">
                     {selectedProductDetail.image && (
                       <img
                         src={selectedProductDetail.image}
                         alt={selectedProductDetail.title}
-                        className="w-full max-h-[50%] object-contain rounded-lg mb-4"
+                        className="w-full max-h-[45%] object-contain rounded-lg mb-6"
                         onError={(e) => {
                           (e.target as HTMLImageElement).style.display = 'none';
                         }}
                       />
                     )}
-                    <h2 className="font-bold text-xl mb-3 text-gray-900 text-center line-clamp-2">{selectedProductDetail.title}</h2>
-                    <p className="text-gray-900 font-bold text-4xl mb-4">
+                    <h2 className={`${rockSalt.className} font-bold text-xl mb-4 text-gray-900 text-center line-clamp-2`}>{selectedProductDetail.title}</h2>
+                    <p style={{ color: '#3A7E8B' }} className="font-bold text-4xl mb-6">
                       ${selectedProductDetail.price.toFixed(2)}
                     </p>
                     
@@ -297,7 +304,7 @@ function ThreeDDemoContent() {
                       href={selectedProductDetail.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="block w-full max-w-sm text-center px-6 py-3 bg-gray-800 hover:bg-gray-900 text-white rounded-lg font-semibold transition-colors text-base"
+                      className="block w-full max-w-sm text-center px-6 py-3 bg-white hover:bg-gray-100 text-gray-700 rounded-lg font-semibold transition-colors text-base border border-gray-300"
                     >
                       View Product →
                     </a>
@@ -327,7 +334,7 @@ function ThreeDDemoContent() {
             {selectedProductIndex !== null && (
               <div className="w-2/3 bg-transparent p-6 flex flex-col h-full">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-xl font-bold text-gray-900">
+                  <h3 className={`${rockSalt.className} text-xl font-bold text-gray-900`}>
                     {data.products[selectedProductIndex].name}
                   </h3>
                   <button
@@ -336,7 +343,7 @@ function ThreeDDemoContent() {
                       setSearchResults([]);
                       setSelectedProductDetail(null);
                     }}
-                    className="px-4 py-2 bg-gray-800 hover:bg-gray-900 rounded-lg text-white font-medium"
+                    className="px-4 py-2 bg-white hover:bg-gray-100 rounded-lg text-gray-700 font-medium"
                   >
                     ← Back
                   </button>
@@ -374,7 +381,7 @@ function ThreeDDemoContent() {
                             />
                           )}
                           <h4 className="font-semibold text-xs mb-2 line-clamp-2 text-gray-900 flex-1">{product.title}</h4>
-                          <p className="text-blue-600 font-bold text-sm">
+                          <p style={{ color: '#3A7E8B' }} className="font-bold text-sm">
                             ${product.price.toFixed(2)}
                           </p>
                         </div>

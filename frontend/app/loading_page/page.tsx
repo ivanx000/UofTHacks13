@@ -2,6 +2,13 @@
 import { Suspense, useEffect, useState, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { getRecommendations } from "@/lib/api";
+import { Rock_Salt } from "next/font/google";
+
+const rockSalt = Rock_Salt({
+  subsets: ["latin"],
+  weight: "400",
+  display: "swap",
+});
 
 function LoadingPageContent() {
   const router = useRouter();
@@ -56,13 +63,13 @@ function LoadingPageContent() {
         );
         console.log("Stored data preview:", verify?.substring(0, 100));
 
-        // Small delay to ensure localStorage is written, then redirect
+        // Minimum 3 second delay before redirecting
         setTimeout(() => {
           if (!cancelled) {
             console.log("Redirecting to prompt_results");
             router.push("/prompt_results");
           }
-        }, 100);
+        }, 3000);
       } catch (err) {
         if (!cancelled) {
           console.error("Error fetching recommendations:", err);
@@ -98,8 +105,8 @@ function LoadingPageContent() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-white">
       <div className="text-center">
-        <div className="animate-pulse text-4xl text-gray-900">Loading recommendations...</div>
-        <div className="mt-4 text-lg text-gray-600">Analyzing your vibe...</div>
+        <div className={`${rockSalt.className} animate-pulse text-4xl text-white`}>Loading recommendations...</div>
+        <div className="mt-4 text-lg text-white">Analyzing your vibe...</div>
       </div>
     </div>
   );
@@ -109,7 +116,7 @@ export default function LoadingPage() {
   return (
     <Suspense fallback={
       <div className="min-h-screen flex items-center justify-center bg-white">
-        <div className="animate-pulse text-4xl text-gray-900">Loading...</div>
+        <div className={`${rockSalt.className} animate-pulse text-4xl text-white`}>Loading...</div>
       </div>
     }>
       <LoadingPageContent />
