@@ -37,7 +37,7 @@ Vibe-to-Product is an intelligent shopping assistant that understands your goals
 - Python 3.10+
 - Node.js 18+ and npm
 - Google Gemini API key
-- (Optional) RapidAPI, SerpAPI, eBay API keys for extended product search
+- SerpAPI keys for extended product search
 
 ### Backend Setup
 
@@ -91,64 +91,43 @@ Vibe-to-Product is an intelligent shopping assistant that understands your goals
 
 ## 📡 API Endpoints
 
-### Main Endpoints
+### Frontend-Used Endpoints
 
-- **`POST /recommend`** - Get AI product recommendations based on vibe
-  ```json
-  {
-    "vibe": "I want to feel more confident at work",
-    "user_preference": "eco-friendly products, budget under $50",
-    "user_id": "user_123"
-  }
-  ```
+- **`POST /recommend`** - Get AI product recommendations based on vibe (with smart routing)
+  - If user has clear vibe → generates product recommendations
+  - If user is unsure + has history → suggests vibes based on patterns
+  - If user is unsure + no history → general recommendations
 
-- **`POST /search-products`** - Search for specific products across platforms
-  ```json
-  {
-    "keyword": "ergonomic office chair",
-    "max_results": 10
-  }
-  ```
 
-- **`POST /suggest-vibe`** - Get personalized vibe suggestions based on history
-  ```json
-  {
-    "user_id": "user_123"
-  }
-  ```
+- **`POST /search-products`** - Search for specific products on Google Shopping
 
-- **`GET /user/{user_id}/history`** - Retrieve user's recommendation history
 
+### Additional Endpoints (for monitoring/debugging)
+
+- **`GET /`** - Root endpoint with API status and memory statistics
+- **`GET /user/{user_id}/history`** - Retrieve user's recommendation history (limit: 10)
 - **`GET /stats`** - Get memory database statistics
-
-- **`GET /logs/recent`** - View recent AI decision logs
+- **`GET /logs/recent`** - View recent AI decision logs (limit: 20)
+- **`GET /logs/user/{user_id}`** - Get all AI decision logs for a specific user
 
 ## 🎨 Features Deep Dive
 
 ### User Memory System
 The application maintains a persistent memory of:
-- User preferences and constraints (budget, style, values)
-- Interaction history with timestamps
+- Interaction history like past vibes and records
 - Generated recommendations and their metadata
-- Shopping patterns and tendencies
-
-### Smart Product Search
-- **Caching**: Reduces API calls with 24-hour cache
-- **Multi-threading**: Parallel searches across platforms
-- **Fallback mechanisms**: Graceful degradation if APIs fail
-- **Result aggregation**: Combines and deduplicates from multiple sources
 
 ### AI-Powered Recommendations
 - Context-aware suggestions based on user goals
 - Learns from past interactions
-- Considers explicit preferences (budget, style, values)
+- Considers explicit preferences (vibe, prompts, values)
 - Generates creative product combinations
 
 ### 3D Visualization
 - Interactive 3D product models
 - Smooth animations and transitions
 - Responsive camera controls
-- Custom models for various product types
+- Custom 3D models for various product types
 
 ## 🛠️ Tech Stack
 
@@ -224,8 +203,7 @@ lsof -ti:8000 | xargs kill -9
 
 **Missing API keys:**
 - Ensure `.env` file exists in `backend/` directory
-- Verify `GEMINI_API_KEY` is set correctly
-- Optional API keys can be left empty (graceful fallback)
+- Verify `GEMINI_API_KEY` and `SERPAPI_KEY` is set correctly
 
 ### Frontend Issues
 
