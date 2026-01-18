@@ -4,7 +4,7 @@
 
 ## 🎯 Overview
 
-ShopOut is an intelligent shopping assistant that understands your goals and lifestyle aspirations, then recommends products that align with your vision. Instead of searching for specific items, describe what you want to achieve — whether it's "feeling more settled in my apartment" or "hosting the best dinner parties" — and get personalized product suggestions powered by Google's Gemini AI.
+E-commerce assumes identity is static — you’re a ‘type of customer,’ and sometimes you are, knowing exactly what you want. But people often shop during moments of transition, novelty, and goal setting: moving, changing jobs, picking up hobbies, and building new habits, when they might not know exactly what they need. Instead of searching for specific items, describe what you want to achieve — whether it's "feeling more settled in my apartment" or "hosting the best dinner parties" — and get personalized product suggestions from ShopOut with beautiful 3D product visuals. Powered by Google's Gemini AI.
 
 ### Key Features
 
@@ -227,6 +227,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 👥 Contributing
 Ivan Xie\
-Michael Salib, Grace-Keyi Wang ,Zusheng Lu 
+Michael Salib\
+Grace-Keyi Wang\
+Zusheng Lu 
 
 --
