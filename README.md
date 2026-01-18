@@ -4,7 +4,7 @@
 
 ## 🎯 Overview
 
-Vibe-to-Product is an intelligent shopping assistant that understands your goals and lifestyle aspirations, then recommends products that align with your vision. Instead of searching for specific items, describe what you want to achieve — whether it's "feeling more settled in my apartment" or "hosting the best dinner parties" — and get personalized product suggestions powered by Google's Gemini AI.
+ShopOut is an intelligent shopping assistant that understands your goals and lifestyle aspirations, then recommends products that align with your vision. Instead of searching for specific items, describe what you want to achieve — whether it's "feeling more settled in my apartment" or "hosting the best dinner parties" — and get personalized product suggestions powered by Google's Gemini AI.
 
 ### Key Features
 
@@ -226,9 +226,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 **UofTHacks 13** - University of Toronto Hackathon
 
 ## 👥 Contributing
+Ivan Xie
+Michael Salib
+Grace-Keyi Wang
+Zusheng Lu 
 
-This project was created for UofTHacks13. If you'd like to contribute or use it as a starting point for your own project, feel free to fork and build upon it!
-
----
-
-Made with ❤️ for UofTHacks13
+--
