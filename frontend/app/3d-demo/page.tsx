@@ -41,24 +41,24 @@ function Product3D({
         <>
           <Text
             position={[0, -1.5, 0]}
-            fontSize={0.22}
+            fontSize={0.35}
             color="black"
             anchorX="center"
             anchorY="middle"
-            maxWidth={3}
-            outlineWidth={0.04}
+            maxWidth={4}
+            outlineWidth={0.06}
             outlineColor="white"
           >
             {productName}
           </Text>
           <Text
-            position={[0, -2.2, 0]}
-            fontSize={0.13}
+            position={[2.5, 0, 0]}
+            fontSize={0.22}
             color="black"
-            anchorX="center"
+            anchorX="left"
             anchorY="middle"
-            maxWidth={4}
-            outlineWidth={0.01}
+            maxWidth={3}
+            outlineWidth={0.02}
             outlineColor="white"
           >
             {productReason}
@@ -90,7 +90,7 @@ function Scene({
 
   // Scattered positions for models (same z-depth for consistency)
   const positions: [number, number, number][] = [
-    [-9, 3.5, 0],
+    [-9, 1.5, 0],
     [6, -3, 0],
     [-1.5, 4.5, 0],
     [8, 2.5, 0],
