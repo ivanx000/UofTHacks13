@@ -63,8 +63,8 @@ export default function Home() {
       </div>
 
       {/* Search Bar */}
-      <div className="flex mt-10 w-110 lg:w-200 relative">
-        <div className="relative flex-1">
+      <div className="mt-10 w-[420px] lg:w-[650px] max-w-2xl">
+        <div className="relative">
           <input
             type="text"
             value={goal}
@@ -80,7 +80,7 @@ export default function Home() {
               });
             }}
             onBlur={() => setIsFocused(false)}
-            className={`${inter.className} text-sm lg:text-lg w-full px-4 py-4 text-gray-400 rounded-lg border bg-gray-100 border-gray-300 focus:outline-none`}
+            className={`${inter.className} text-sm lg:text-lg w-full pl-4 pr-14 py-3 text-gray-400 rounded-full border bg-gray-100 border-gray-300 focus:outline-none`}
           />
 
           {/* Animated suggestion (after prefix) */}
@@ -93,16 +93,26 @@ export default function Home() {
               {placeholders[currentIndex]}
             </span>
           )}
-        </div>
 
-        {/* Go Button */}
-        <button
-          onClick={goTo3DDemo}
-          disabled={goal.trim() === PREFIX.trim()}
-          className="ml-2 lg:ml-5 w-15 lg:w-20 bg-gray-300 font-semibold text-gray-700 py-2 px-4 rounded-lg disabled:opacity-50 disabled:text-gray-600"
-        >
-          Go
-        </button>
+          {/* Go Button - Inside input */}
+          <button
+            onClick={goTo3DDemo}
+            disabled={goal.trim() === PREFIX.trim()}
+            className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-gray-400 rounded-full flex items-center justify-center disabled:opacity-40 hover:bg-gray-500 transition-colors"
+          >
+            <svg 
+              className="w-6 h-6 translate-x-0.5" 
+              viewBox="0 0 24 24" 
+              fill="none"
+              stroke="white"
+              strokeWidth="3"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M3 12h16M12 5l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
       </div>
     </div>
   );

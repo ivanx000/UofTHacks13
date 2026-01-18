@@ -36,6 +36,7 @@ function Product3D({
         modelFile={modelFile}
         scale={scale}
         offset={offset}
+        isSelected={isSelected}
       />
       {!isSelected && (
         <>

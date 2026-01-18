@@ -10,6 +10,7 @@ interface Product3DModelProps {
   modelFile: string; // e.g., "candle.obj", "diffuser.obj", etc.
   scale?: number;
   offset?: [number, number, number]; // Offset to adjust rotation center
+  isSelected?: boolean; // Freeze rotation when selected
 }
 
 export default function Product3DModel({ 
@@ -17,7 +18,8 @@ export default function Product3DModel({
   color,
   modelFile,
   scale = 0.015,
-  offset = [0, 0, 0]
+  offset = [0, 0, 0],
+  isSelected = false
 }: Product3DModelProps) {
   const groupRef = useRef<any>(null);
   const [hovered, setHovered] = useState(false);
@@ -34,9 +36,16 @@ export default function Product3DModel({
     Math.random() * Math.PI * 2
   ], []);
 
-  // Auto-rotate the model freely on all axes
+  // Consistent frozen rotation for panel view
+  const frozenRotation = useMemo(() => [
+    Math.PI * 0.15,  // Slight tilt on x-axis
+    Math.PI * 0.25,  // Nice angle on y-axis
+    0                // No z-axis rotation
+  ], []);
+
+  // Auto-rotate the model freely on all axes (unless selected)
   useFrame((state, delta) => {
-    if (groupRef.current) {
+    if (groupRef.current && !isSelected) {
       groupRef.current.rotation.x += delta * 0.2;
       groupRef.current.rotation.y += delta * 0.3;
       groupRef.current.rotation.z += delta * 0.15;
@@ -50,6 +59,15 @@ export default function Product3DModel({
       groupRef.current.rotation.z = initialRotation[2];
     }
   }, [initialRotation]);
+
+  // Set consistent rotation when selected
+  useEffect(() => {
+    if (groupRef.current && isSelected) {
+      groupRef.current.rotation.x = frozenRotation[0];
+      groupRef.current.rotation.y = frozenRotation[1];
+      groupRef.current.rotation.z = frozenRotation[2];
+    }
+  }, [isSelected, frozenRotation]);
 
   useEffect(() => {
     if (clonedObj && groupRef.current) {
